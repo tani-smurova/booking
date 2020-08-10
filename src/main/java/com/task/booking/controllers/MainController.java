@@ -1,6 +1,8 @@
 package com.task.booking.controllers;
 
+import com.task.booking.models.Booking;
 import com.task.booking.models.Resource;
+import com.task.booking.repo.BookingRepository;
 import com.task.booking.repo.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ import java.util.Optional;
 public class MainController {
     @Autowired
     private ResourceRepository resourceRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @GetMapping("/")
     public String greeting (Map <String, Object> model){
@@ -42,8 +46,9 @@ public class MainController {
     public String allResource (Map<String, Object> model){
        Iterable <Resource>  resources = resourceRepository.findAll();
        model.put("resources", resources);
+       Iterable <Booking> bookings = bookingRepository.findAll();
+       model.put("bookings", bookings);
        return "resource-all";
-
     }
 
     @PostMapping("/resource-edit/{id}")
@@ -75,9 +80,24 @@ public class MainController {
             resources = resourceRepository.findByNameResourceContains(filter);
         } else
             resources = resourceRepository.findAll();
-
         model.put("resources", resources);
         return "resource-all";
+    }
+
+    @GetMapping ("booking-add")
+    public String addBooking (){
+        return "booking-add";
+    }
+
+    @PostMapping ("booking-add")
+    public String addPostBooking (@RequestParam String time, @RequestParam Integer count, @RequestParam String description){
+        Booking book = new Booking();
+        book.setTimeBooking(time);
+        book.setCountPerson(count);
+        book.setDescription(description);
+        bookingRepository.save(book);
+        return "redirect:/resource-all";
+
     }
 
 }
