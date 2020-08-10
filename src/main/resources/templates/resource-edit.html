@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование ресурса</title>
+</head>
+<body>
+<div class="container mt-5 mb-5">
+    <h1>Редактирование ресурса</h1>
+    <div   th:each="el : ${resource}">
+        <form method="post">
+            <input type="text" th:value="${el.nameResource}" name="nameResource" placeholder="Введите название ресурса" class="form-control"><br>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" class="btn btn-success">Обновить ресурс</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

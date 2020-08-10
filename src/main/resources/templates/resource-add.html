@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление ресурса</title>
+</head>
+<body>
+    <h1>Добавление ресурса</h1>
+    <form action="resource-add" method="post">
+        <input type="text" name="name" placeholder="Введите название ресурса" class="form-control"><br>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="btn btn-success">Добавить ресурс</button>
+    </form>
+</body>
+</html>
