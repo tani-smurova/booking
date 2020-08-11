@@ -2,9 +2,11 @@ package com.task.booking.controllers;
 
 import com.task.booking.models.Booking;
 import com.task.booking.models.Resource;
+import com.task.booking.models.User;
 import com.task.booking.repo.BookingRepository;
 import com.task.booking.repo.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -90,10 +92,11 @@ public class MainController {
     }
 
     @PostMapping ("booking-add")
-    public String addPostBooking (@RequestParam String time, @RequestParam Integer count, @RequestParam String description){
+    public String addPostBooking (@RequestParam String time, @RequestParam Integer count, @AuthenticationPrincipal User user, @RequestParam String description){
         Booking book = new Booking();
         book.setTimeBooking(time);
         book.setCountPerson(count);
+        book.setUser(user);
         book.setDescription(description);
         bookingRepository.save(book);
         return "redirect:/resource-all";

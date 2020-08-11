@@ -31,8 +31,9 @@
     <h1>Список бронирования</h1>
     <div th:each="el : ${bookings}">
         <h3 th:text="${el.id}"/>
-        <h3 th:text="${el.timeBooking}"/>
-        <h3 th:text="${el.countPerson}"/>
+        <h3 th:text="'Время бронирования: '+ ${el.timeBooking}"/>
+        <h3 th:text="'Количество персон: '+ ${el.countPerson}"/>
+        <h3 th:text="'Кем забронировано: '+${el.getUsername()}"/>
     </div>
     <a th:href="'/booking-add'" class="btn btn-warning">Добавить бронирование</a>
 </div>

@@ -1,10 +1,7 @@
 package com.task.booking.models;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Booking {
@@ -16,11 +13,16 @@ public class Booking {
 
     private Integer countPerson;
 
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id")
+    private User user;
+
     private String description;
 
-    public Booking(String timeBooking, Integer countPerson, String description) {
+    public Booking(String timeBooking, Integer countPerson, User user, String description) {
         this.timeBooking = timeBooking;
         this.countPerson = countPerson;
+        this.user = user;
         this.description = description;
     }
 
@@ -51,11 +53,22 @@ public class Booking {
         this.countPerson = countPerson;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getUsername(){
+        return user!= null ? user.getUsername() : "";
     }
 }
