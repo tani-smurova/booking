@@ -9,6 +9,10 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="resource_id")
+    private Resource resource;
+
     private String timeBooking;
 
     private Integer countPerson;
@@ -19,7 +23,8 @@ public class Booking {
 
     private String description;
 
-    public Booking(String timeBooking, Integer countPerson, User user, String description) {
+    public Booking(Resource resource, String timeBooking, Integer countPerson, User user, String description) {
+        this.resource = resource;
         this.timeBooking = timeBooking;
         this.countPerson = countPerson;
         this.user = user;
@@ -35,6 +40,14 @@ public class Booking {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
     }
 
     public String getTimeBooking() {
@@ -71,4 +84,8 @@ public class Booking {
     public String getUsername(){
         return user!= null ? user.getUsername() : "";
     }
+    public String getNameRosource(){
+        return resource!= null ? resource.getNameResource() : "";
+    }
+
 }

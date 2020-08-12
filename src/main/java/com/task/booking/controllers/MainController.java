@@ -45,11 +45,16 @@ public class MainController {
     }
 
     @GetMapping("/resource-all")
-    public String allResource (Map<String, Object> model){
-       Iterable <Resource>  resources = resourceRepository.findAll();
-       model.put("resources", resources);
+    public String allResource (@RequestParam(required = false, defaultValue = "") String filter, Model model){
+       Iterable <Resource>  resources;
+        if (filter != null && !filter.isEmpty()){
+            resources = resourceRepository.findByNameResourceContains(filter);
+        } else
+            resources = resourceRepository.findAll();
+       model.addAttribute("resources", resources);
+       model.addAttribute("filter", filter);
        Iterable <Booking> bookings = bookingRepository.findAll();
-       model.put("bookings", bookings);
+       model.addAttribute("bookings", bookings);
        return "resource-all";
     }
 
@@ -75,32 +80,38 @@ public class MainController {
         return "resource-edit";
     }
 
-    @PostMapping("filter")
-    public String filter (@RequestParam String filter, Map<String, Object> model){
-        Iterable<Resource> resources;
-        if (filter != null && !filter.isEmpty()){
-            resources = resourceRepository.findByNameResourceContains(filter);
-        } else
-            resources = resourceRepository.findAll();
-        model.put("resources", resources);
-        return "resource-all";
+    @PostMapping("resource-remove-{id}")
+    public String removePostResource(@PathVariable (value="id") Long id){
+        Resource res = resourceRepository.findById(id).orElseThrow();
+        resourceRepository.delete(res);
+        return "redirect:/resource-all";
     }
 
     @GetMapping ("booking-add")
-    public String addBooking (){
+    public String addBooking (Map <String, Object> model){
+        Iterable <Resource> resources = resourceRepository.findAll();
+        model.put("resources", resources);
         return "booking-add";
     }
 
     @PostMapping ("booking-add")
-    public String addPostBooking (@RequestParam String time, @RequestParam Integer count, @AuthenticationPrincipal User user, @RequestParam String description){
+    public String addPostBooking (@RequestParam Long idResource, @RequestParam String time, @RequestParam Integer count, @AuthenticationPrincipal User user, @RequestParam String description){
         Booking book = new Booking();
+        Resource res = resourceRepository.findById(idResource).orElseThrow();
+        book.setResource(res);
         book.setTimeBooking(time);
         book.setCountPerson(count);
         book.setUser(user);
         book.setDescription(description);
         bookingRepository.save(book);
         return "redirect:/resource-all";
+    }
 
+    @PostMapping ("booking-remove-{id}")
+    public String removePostBooking(@PathVariable (value = "id") Long id){
+        Booking book = bookingRepository.findById(id).orElseThrow();
+        bookingRepository.delete(book);
+        return "redirect:/resource-all";
     }
 
 }

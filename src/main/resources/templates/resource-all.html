@@ -14,26 +14,34 @@
     </form>
 
     <!-- Фильтр по ресурсам -->
-    <form method="post" action="filter">
-        <input type="text" name="filter">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <form method="get" action="/resource-all">
+        <input type="text" name="filter" th:value="${filter}">
         <button type="submit">Найти ресурс</button>
     </form>
 
     <!-- Список всех ресурсов с кнопками редактирования и добавления нового ресурса -->
     <div   th:each="el : ${resources}">
-        <h3 th:text="${el.nameResource}"/>
-        <h5> <a th:href="'/resource-edit/' + ${el.id}" class ="btn btn-warning">Редактировать ресурс</a></h5>
+        <div>
+            <p> <b th:text="${el.nameResource}" /> </p>
+            <p> <small> <a th:href="'/resource-edit/' + ${el.id}" class ="btn btn-warning">Редактировать ресурс</a> </small></p>
+        </div><br>
     </div>
     <a th:href="'/resource-add'" class ="btn btn-warning">Добавить ресурс</a>
-
-    <!-- Список всех бронирований, с кнопкой добавление нового бронирования-->
+    <hr>
+    <!-- Список всех бронирований, с кнопками добавление/удаления бронирования-->
     <h1>Список бронирования</h1>
     <div th:each="el : ${bookings}">
-        <h3 th:text="${el.id}"/>
-        <h3 th:text="'Время бронирования: '+ ${el.timeBooking}"/>
-        <h3 th:text="'Количество персон: '+ ${el.countPerson}"/>
-        <h3 th:text="'Кем забронировано: '+${el.getUsername()}"/>
+        <form th:action ="'/booking-remove-'+${el.id}" method = "post">
+            <p th:text="'Ресурс бронирования: ' + ${el.getNameRosource()}"/>
+            <p th:text="'Время бронирования: '+ ${el.timeBooking}"/>
+            <details>
+                <summary>Описание бронирования</summary>
+                <p th:text="'Количество персон: '+ ${el.countPerson}"/>
+                <p th:text="'Кем забронировано: '+${el.getUsername()}"/>
+                <p th:text="'Описание бронирования: '+ ${el.description}"/>
+            </details><br>
+            <button class="btn btn-warning" type="submit"> Отменить бронирование </button>
+        </form><br>
     </div>
     <a th:href="'/booking-add'" class="btn btn-warning">Добавить бронирование</a>
 </div>
