@@ -80,7 +80,7 @@ public class MainController {
         return "resource-edit";
     }
 
-    @PostMapping("resource-remove-{id}")
+    @PostMapping("resource-remove/{id}")
     public String removePostResource(@PathVariable (value="id") Long id){
         Resource res = resourceRepository.findById(id).orElseThrow();
         resourceRepository.delete(res);

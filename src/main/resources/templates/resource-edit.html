@@ -15,7 +15,7 @@
         </form>
     </div> <br>
     <div th:each="el : ${resource}">
-        <form th:action="'/resource-remove-' + ${el.id}" method="post">
+        <form th:action="'/resource-remove/' + ${el.id}" method="post">
             <button class="btn btn-warning" type="submit">Удалить ресурс</button>
         </form>
     </div>

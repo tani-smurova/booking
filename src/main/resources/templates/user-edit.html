@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование профиля пользователя</title>
+</head>
+<body>
+<div class="container mt-5 mb-5">
+    <h1>Редактирование профиля пользователя</h1>
+    <div   th:each="el : ${user}">
+        <form method="post">
+            <label>Введите имя пользователя: </label>
+            <input type="text" th:value="${el.username}" name="username" placeholder="Имя пользователя" class="form-control"><br>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <label>Выберите роли пользователя: </label>
+            <ul>
+                <li th:each = "role : ${roles}">
+                    <input type="checkbox" name ="roles[]" th:value = "${role}"
+                           th:checked="${user.roles.contains(role)}"/>
+                    <label th:text="${role}"></label>
+
+                </li>
+            </ul>
+
+            <br>
+            <button type="submit" class="btn btn-success">Обновить профиль</button>
+        </form>
+    </div> <br>
+    <div th:each="el : ${user}">
+        <form th:action="'/user-remove/' + ${el.id}" method="post">
+            <button class="btn btn-warning" type="submit">Удалить профиль пользователя</button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

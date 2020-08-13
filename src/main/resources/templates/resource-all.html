@@ -12,6 +12,8 @@
         <input type="submit" value="Sign Out"/>
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     </form>
+    <a th:href="'/user'" class="btn btn-warning"> Список пользователей </a> <br>
+
 
     <!-- Фильтр по ресурсам -->
     <form method="get" action="/resource-all">

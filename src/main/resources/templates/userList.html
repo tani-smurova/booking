@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+</head>
+<body>
+<h1>Список пользователей</h1>
+<div th:each="el : ${users}">
+    <p th:text="'Имя пользователя: ' + ${el.username}"></p>
+    <p th:text="'Роль: ' + ${el.getRoles()}"></p>
+    <a th:href="'/user-edit/' + ${el.id}" class="btn btn-warning">Редактировать</a><br>
+</div>
+</body>
+</html>
