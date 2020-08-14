@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Справочник ресурсов</title>
-    <link rel="stylesheet" href="/static/style.css"
 </head>
 <body>
 <div class="container mt-5">
@@ -26,12 +25,6 @@
     <div   th:each="el : ${resources}">
         <div>
             <p> <b th:text="${el.nameResource}" /> </p>
-            <div th:if="${el.filename}">
-                <img src="1.jpg" th:src="@{img/1.jpg}" >
-            </div>
-
-
-
             <p> <small> <a th:href="'/resource-edit/' + ${el.id}" class ="btn btn-warning">Редактировать ресурс</a> </small></p>
         </div><br>
     </div>

@@ -6,7 +6,6 @@ import com.task.booking.models.User;
 import com.task.booking.repo.BookingRepository;
 import com.task.booking.repo.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class MainController {
@@ -26,9 +25,6 @@ public class MainController {
     private ResourceRepository resourceRepository;
     @Autowired
     private BookingRepository bookingRepository;
-
-    @Value("${upload.path}")
-    private String uploadPath;
 
     @GetMapping("/")
     public String greeting (Map <String, Object> model){
@@ -41,22 +37,9 @@ public class MainController {
     }
 
     @PostMapping("/resource-add")
-    public String addPostResource(@RequestParam String name, @RequestParam("file") MultipartFile file, Model model) throws IOException {
+    public String addPostResource(@RequestParam String name, Model model){
         Resource res = new Resource();
         res.setNameResource(name);
-
-        if (file != null && !file.getOriginalFilename().isEmpty()){
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()){
-                uploadDir.mkdir();
-            }
-
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-            res.setFilename(resultFilename);
-        }
-
         resourceRepository.save(res);
         return "redirect:/resource-all";
     }
