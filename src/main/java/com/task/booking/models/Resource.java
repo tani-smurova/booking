@@ -13,6 +13,8 @@ public class Resource {
 
     private String nameResource;
 
+    private String filename;
+
     public Long getId() {
         return id;
     }
@@ -29,4 +31,11 @@ public class Resource {
         this.nameResource = nameResource;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 }

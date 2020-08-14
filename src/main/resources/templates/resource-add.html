@@ -6,8 +6,9 @@
 </head>
 <body>
     <h1>Добавление ресурса</h1>
-    <form action="resource-add" method="post">
+    <form action="resource-add" method="post" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Введите название ресурса" class="form-control"><br>
+        <input type="file" name="file">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <button type="submit" class="btn btn-success">Добавить ресурс</button>
     </form>
