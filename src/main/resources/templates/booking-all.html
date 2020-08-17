@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список бронирований</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <navbar th:insert="/blocks/navbar :: navbar"></navbar>
+</head>
+
+<!-- Список всех бронирований, с кнопками добавление/удаления бронирования-->
+
+<body>
+<h1>Список бронирования</h1>
+<div th:each="el : ${bookings}">
+    <form th:action ="'/booking-remove-'+${el.id}" method = "post">
+        <p th:text="'Ресурс бронирования: ' + ${el.getNameRosource()}"/>
+        <p th:text="'Время бронирования: '+ ${el.timeBooking}"/>
+        <details>
+            <summary>Описание бронирования</summary>
+            <p th:text="'Количество персон: '+ ${el.countPerson}"/>
+            <p th:text="'Кем забронировано: '+${el.getUsername()}"/>
+            <p th:text="'Описание бронирования: '+ ${el.description}"/>
+        </details><br>
+        <button class="btn btn-warning" type="submit"> Отменить бронирование </button>
+    </form><br>
+</div>
+<a th:href="'/booking-add'" class="btn btn-warning">Добавить бронирование</a>
+
+</body>
+</html>

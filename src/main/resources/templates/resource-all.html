@@ -3,49 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Справочник ресурсов</title>
+
+    <navbar th:insert="/blocks/navbar :: navbar"></navbar>
+
 </head>
 <body>
 <div class="container mt-5">
 
-    <!-- Безопасность - кнопка выхода из аккаунта + CSRF токен -->
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    </form>
-    <a th:href="'/user'" class="btn btn-warning"> Список пользователей </a> <br>
-
-
     <!-- Фильтр по ресурсам -->
-    <form method="get" action="/resource-all">
-        <input type="text" name="filter" th:value="${filter}">
-        <button type="submit">Найти ресурс</button>
-    </form>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <form method="get" action="/resource-all">
+                <input type="text" name="filter" th:value="${filter}" placeholder="Найти ресурс">
+                <button type="submit" class="btn btn-primary ml-2">Найти ресурс</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Список всех ресурсов с кнопками редактирования и добавления нового ресурса -->
-    <div   th:each="el : ${resources}">
-        <div>
-            <p> <b th:text="${el.nameResource}" /> </p>
-            <p> <small> <a th:href="'/resource-edit/' + ${el.id}" class ="btn btn-warning">Редактировать ресурс</a> </small></p>
-        </div><br>
+    <div class="card-columns">
+        <div   th:each="el : ${resources}">
+            <div class="card">
+                <h5 class="card-title" th:text="${el.nameResource}"> </h5>
+                <p> <small> <a th:href="'/resource-edit/' + ${el.id}" class ="btn btn-light">Редактировать ресурс</a> </small></p>
+            </div>
+        </div>
     </div>
-    <a th:href="'/resource-add'" class ="btn btn-warning">Добавить ресурс</a>
+    <a th:href="'/resource-add'" class ="btn btn-primary">Добавить ресурс</a>
     <hr>
-    <!-- Список всех бронирований, с кнопками добавление/удаления бронирования-->
-    <h1>Список бронирования</h1>
-    <div th:each="el : ${bookings}">
-        <form th:action ="'/booking-remove-'+${el.id}" method = "post">
-            <p th:text="'Ресурс бронирования: ' + ${el.getNameRosource()}"/>
-            <p th:text="'Время бронирования: '+ ${el.timeBooking}"/>
-            <details>
-                <summary>Описание бронирования</summary>
-                <p th:text="'Количество персон: '+ ${el.countPerson}"/>
-                <p th:text="'Кем забронировано: '+${el.getUsername()}"/>
-                <p th:text="'Описание бронирования: '+ ${el.description}"/>
-            </details><br>
-            <button class="btn btn-warning" type="submit"> Отменить бронирование </button>
-        </form><br>
-    </div>
-    <a th:href="'/booking-add'" class="btn btn-warning">Добавить бронирование</a>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
 </div>
 </body>
 </html>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,8 +52,6 @@ public class MainController {
             resources = resourceRepository.findAll();
        model.addAttribute("resources", resources);
        model.addAttribute("filter", filter);
-       Iterable <Booking> bookings = bookingRepository.findAll();
-       model.addAttribute("bookings", bookings);
        return "resource-all";
     }
 
@@ -87,6 +84,13 @@ public class MainController {
         return "redirect:/resource-all";
     }
 
+    @GetMapping("booking-all")
+    public String allBooking(Model model){
+        Iterable <Booking> bookings = bookingRepository.findAll();
+        model.addAttribute("bookings", bookings);
+        return "booking-all";
+    }
+
     @GetMapping ("booking-add")
     public String addBooking (Map <String, Object> model){
         Iterable <Resource> resources = resourceRepository.findAll();
@@ -111,7 +115,7 @@ public class MainController {
     public String removePostBooking(@PathVariable (value = "id") Long id){
         Booking book = bookingRepository.findById(id).orElseThrow();
         bookingRepository.delete(book);
-        return "redirect:/resource-all";
+        return "redirect:/booking-all";
     }
 
 }

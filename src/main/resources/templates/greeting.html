@@ -5,7 +5,13 @@
     <title>Приветствие</title>
 </head>
 <body>
-    <div>Hello, user</div>
-    <a href="/resource-all"> Справочник ресурсов </a>
+
+    <navbar th:insert="/blocks/navbar :: navbar"></navbar>
+
+    <div class="container mt-5">
+        <h5>Привет, guest</h5>
+        <div>Это сервис бронирования(резервирования) ресурсов</div>
+    </div>
+
 </body>
 </html>
