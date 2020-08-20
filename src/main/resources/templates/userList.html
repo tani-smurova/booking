@@ -11,7 +11,10 @@
 <div th:each="el : ${users}">
     <p th:text="'Имя пользователя: ' + ${el.username}"></p>
     <p th:text="'Роль: ' + ${el.getRoles()}"></p>
+    <p th:text="'Адрес электронной почты: ' + ${el.getEmail()}"></p>
+    <p th:text="'Аккаунт активирован: ' + ${el.active}"></p>
     <a th:href="'/user-edit/' + ${el.id}" class="btn btn-warning">Редактировать</a><br>
+    <hr>
 </div>
 </body>
 </html>

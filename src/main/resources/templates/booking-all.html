@@ -14,10 +14,13 @@
 
 <body>
 <h1>Список бронирования</h1>
+
 <div th:each="el : ${bookings}">
     <form th:action ="'/booking-remove-'+${el.id}" method = "post">
         <p th:text="'Ресурс бронирования: ' + ${el.getNameRosource()}"/>
-        <p th:text="'Время бронирования: '+ ${el.timeBooking}"/>
+        <p th:text="'Дата бронирования: '+ ${#dates.format(el.date, 'dd-MM-yyyy')}"/>
+        <p th:text="'Время начала брони: '+ ${#dates.format(el.timeStart, 'HH:mm')}"/>
+        <p th:text="'Время окончания брони: '+ ${#dates.format(el.timeEnd, 'HH:mm')}"/>
         <details>
             <summary>Описание бронирования</summary>
             <p th:text="'Количество персон: '+ ${el.countPerson}"/>

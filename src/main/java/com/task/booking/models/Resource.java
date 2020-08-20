@@ -7,6 +7,8 @@ import javax.persistence.Id;
 
 @Entity
 public class Resource {
+    //Модель сущности "Ресурс для бронирования"
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;

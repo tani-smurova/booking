@@ -2,9 +2,12 @@ package com.task.booking.models;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Booking {
+    //Модель сущности "Бронирование"
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -13,7 +16,12 @@ public class Booking {
     @JoinColumn(name="resource_id")
     private Resource resource;
 
-    private String timeBooking;
+    private Date date;
+
+    private Date timeStart;
+
+    private Date timeEnd;
+
 
     private Integer countPerson;
 
@@ -23,9 +31,9 @@ public class Booking {
 
     private String description;
 
-    public Booking(Resource resource, String timeBooking, Integer countPerson, User user, String description) {
+    public Booking(Resource resource, Date date, Integer countPerson, User user, String description) {
         this.resource = resource;
-        this.timeBooking = timeBooking;
+        this.date = date;
         this.countPerson = countPerson;
         this.user = user;
         this.description = description;
@@ -50,12 +58,28 @@ public class Booking {
         this.resource = resource;
     }
 
-    public String getTimeBooking() {
-        return timeBooking;
+    public Date getDate() {
+        return date;
     }
 
-    public void setTimeBooking(String timeBooking) {
-        this.timeBooking = timeBooking;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(Date timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public Date getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(Date timeEnd) {
+        this.timeEnd = timeEnd;
     }
 
     public Integer getCountPerson() {

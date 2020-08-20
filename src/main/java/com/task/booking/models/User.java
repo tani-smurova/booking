@@ -10,12 +10,15 @@ import java.util.Set;
 @Entity
 @Table(name="usr")
 public class User implements UserDetails {
+    //Модель сущности "Профиль пользователя"
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private String username;
     private String password;
     private boolean active;
+    private boolean isEnabled;
 
     private String email;
     private String activationCode;
@@ -55,6 +58,10 @@ public class User implements UserDetails {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     public Set<Role> getRoles() {
@@ -105,4 +112,5 @@ public class User implements UserDetails {
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
     }
+
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,15 +33,15 @@ public class UserService implements UserDetailsService {
         if (userFromDb != null){
             return false;
         }
-        user.setActive(true);
+        user.setActive(false);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
         userRepository.save(user);
 
         if (!StringUtils.isEmpty(user.getEmail())){
             String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to BookingsService. Please, visit to link: http://localhost:8080/activate/%s",
+                    "Привет, %s! \n" +
+                            "Добро пожаловать в сервис бронирования. Для активации аккаунта перейдите по ссылке: http://localhost:8080/activate/%s",
                     user.getUsername(),
                     user.getActivationCode()
             );
@@ -55,7 +56,13 @@ public class UserService implements UserDetailsService {
             return  false;
         }
         user.setActivationCode(null);
+        user.setActive(true);
         userRepository.save(user);
         return true;
     }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
 }

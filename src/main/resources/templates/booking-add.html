@@ -3,20 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Бронирование ресурса</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <navbar th:insert="/blocks/navbar :: navbar"></navbar>
 </head>
 <body>
 <h1>Бронирование ресурса</h1>
-<form action="booking-add" method="post">
-    <select name="idResource">
-        <option selected disabled>Выберите ресурс для бронирования</option>
-        <option th:each="el : ${resources}" th:value="${el.getId()}"
-                th:text="${el.nameResource}"> </option>
-    </select><br><br>
-    <input type="text" name="time" placeholder="Введите время бронирования" class="form-control"><br><br>
-    <input type="text" name="count" placeholder="Введите количество персон" class="form-control"><br><br>
-    <input type="text" name="description" placeholder="Введите описание" class="form-control"><br><br>
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    <button type="submit" class="btn btn-success">Забронировать</button>
-</form>
+<div class="container ml-2">
+    <form action="booking-add" method="post">
+
+        <div class="form-group row mr-5 col-sm-9" >
+            <select class="custom-select" name="idResource">
+                <option selected disabled>Выберите ресурс для бронирования</option>
+                <option th:each="el : ${resources}" th:value="${el.getId()}"
+                        th:text="${el.nameResource}"> </option>
+            </select>
+        </div>
+
+        <div class="form-group row  mr-5">
+            <label class="col-sm-3 col-form-label"> Введите количество персон: </label>
+            <div class="col-sm-6">
+                <input type="text" name="count" class="form-control" placeholder="Введите количество персон"/>
+            </div>
+        </div>
+
+        <div class="form-group row  mr-5">
+            <label class="col-sm-3 col-form-label"> Введите дату бронирования: </label>
+            <div class="col-sm-6">
+                <input type="date" name="date" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group row  mr-5">
+            <label class="col-sm-3 col-form-label"> Введите время начала брони: </label>
+            <div class="col-sm-6">
+                <input type="time" name="timeStart" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group row  mr-5">
+            <label class="col-sm-3 col-form-label"> Введите время окончания брони: </label>
+            <div class="col-sm-6">
+                <input type="time" name="timeEnd" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group row  mr-5">
+            <label class="col-sm-3 col-form-label"> Введите описание: </label>
+            <div class="col-sm-6">
+                <input type="text" name="description" class="form-control" placeholder="Введите описание"/>
+            </div>
+        </div>
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="btn btn-success">Забронировать</button>
+    </form>
+</div>
 </body>
 </html>

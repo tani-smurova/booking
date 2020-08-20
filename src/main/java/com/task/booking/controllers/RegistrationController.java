@@ -13,6 +13,7 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
+    //Контроллер, отвечающий за регистрацию: регистрация и активация профиля пользователя
 
     @Autowired
     private UserService userService;
@@ -29,6 +30,7 @@ public class RegistrationController {
             model.put("message", "User exist");
             return "registration";
         }
+        user.setActive(false);
         return "redirect:/login";
     }
     @GetMapping("/activate/{code}")
