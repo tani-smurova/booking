@@ -14,24 +14,35 @@
 
 <body>
 <h1>Список бронирования</h1>
+<div class="container ml-2">
+    <form class="form-row  mb-2" method="get" action="/booking-all">
+        <select class="custom-select col-sm-3" name="fastFilter">
+            <option selected>Выберите быстрый фильтр</option>
+            <option value="week">Бронирования за неделю</option>
+            <option value="two_week">Бронирования за 2 недели</option>
+            <option value="month">Бронирования за месяц</option>
+            <option value="all">Без фильтра</option>
+        </select>
+        <button type="submit" class="btn btn-light">Применить быстрый  фильтр</button>
+    </form>
 
-<div th:each="el : ${bookings}">
-    <form th:action ="'/booking-remove-'+${el.id}" method = "post">
-        <p th:text="'Ресурс бронирования: ' + ${el.getNameRosource()}"/>
-        <p th:text="'Дата бронирования: '+ ${#dates.format(el.date, 'dd-MM-yyyy')}"/>
-        <p th:text="'Время начала брони: '+ ${#dates.format(el.timeStart, 'HH:mm')}"/>
-        <p th:text="'Время окончания брони: '+ ${#dates.format(el.timeEnd, 'HH:mm')}"/>
-        <details>
-            <summary>Описание бронирования</summary>
-            <p th:text="'Количество персон: '+ ${el.countPerson}"/>
-            <p th:text="'Кем забронировано: '+${el.getUsername()}"/>
-            <p th:text="'Описание бронирования: '+ ${el.description}"/>
-        </details><br>
-        <button class="btn btn-warning" type="submit"> Отменить бронирование </button>
-    </form><br>
-    <hr>
+    <div th:each="el : ${bookings}">
+        <form th:action ="'/booking-remove-'+${el.id}" method = "post">
+            <p th:text="'Ресурс бронирования: ' + ${el.getNameRosource()}"/>
+            <p th:text="'Дата бронирования: '+ ${#dates.format(el.date, 'dd-MM-yyyy')}"/>
+            <p th:text="'Время начала брони: '+ ${#dates.format(el.timeStart, 'HH:mm')}"/>
+            <p th:text="'Время окончания брони: '+ ${#dates.format(el.timeEnd, 'HH:mm')}"/>
+            <details>
+                <summary>Описание бронирования</summary>
+                <p th:text="'Количество персон: '+ ${el.countPerson}"/>
+                <p th:text="'Кем забронировано: '+${el.getUsername()}"/>
+                <p th:text="'Описание бронирования: '+ ${el.description}"/>
+            </details><br>
+            <button class="btn btn-warning" type="submit"> Отменить бронирование </button>
+        </form><br>
+        <hr>
+    </div>
+    <a th:href="'/booking-add'" class="btn btn-warning">Добавить бронирование</a>
 </div>
-<a th:href="'/booking-add'" class="btn btn-warning">Добавить бронирование</a>
-
 </body>
 </html>

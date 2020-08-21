@@ -11,48 +11,66 @@
 <body>
 <h1>Бронирование ресурса</h1>
 <div class="container ml-2">
-    <form action="booking-add" method="post">
+    <form  class="was-validated" action="booking-add" method="post">
 
-        <div class="form-group row mr-5 col-sm-9" >
-            <select class="custom-select" name="idResource">
-                <option selected disabled>Выберите ресурс для бронирования</option>
+        <div class="form-group row mr-5 col-sm-9 " >
+            <select class="custom-select" name="idResource" required>
+                <option value="">Выберите ресурс для бронирования</option>
                 <option th:each="el : ${resources}" th:value="${el.getId()}"
                         th:text="${el.nameResource}"> </option>
             </select>
+            <div class="invalid-feedback">
+                Пожалуйста, укажите бронируемый ресурс.
+            </div>
         </div>
 
         <div class="form-group row  mr-5">
             <label class="col-sm-3 col-form-label"> Введите количество персон: </label>
             <div class="col-sm-6">
-                <input type="text" name="count" class="form-control" placeholder="Введите количество персон"/>
+                <input type="text" name="count" class="form-control is-invalid" placeholder="Введите количество персон" required/>
+            </div>
+            <div class="invalid-feedback">
+                Пожалуйста, укажите количество персон.
             </div>
         </div>
 
         <div class="form-group row  mr-5">
             <label class="col-sm-3 col-form-label"> Введите дату бронирования: </label>
             <div class="col-sm-6">
-                <input type="date" name="date" class="form-control"/>
+                <input type="date" name="date" class="form-control is-invalid" required/>
+            </div>
+            <div class="invalid-feedback">
+                Пожалуйста, укажите дату бронирования.
             </div>
         </div>
 
         <div class="form-group row  mr-5">
             <label class="col-sm-3 col-form-label"> Введите время начала брони: </label>
             <div class="col-sm-6">
-                <input type="time" name="timeStart" class="form-control"/>
+                <input type="time" name="timeStart" class="form-control is-invalid" required/>
+            </div>
+            <div class="invalid-feedback">
+                Пожалуйста, укажите время начала бронирования.
             </div>
         </div>
 
         <div class="form-group row  mr-5">
             <label class="col-sm-3 col-form-label"> Введите время окончания брони: </label>
             <div class="col-sm-6">
-                <input type="time" name="timeEnd" class="form-control"/>
+                <input type="time" name="timeEnd" class="form-control is-invalid" required/>
+            </div>
+            <div class="invalid-feedback">
+                Пожалуйста, укажите время окончания бронирования.
             </div>
         </div>
 
         <div class="form-group row  mr-5">
             <label class="col-sm-3 col-form-label"> Введите описание: </label>
             <div class="col-sm-6">
-                <input type="text" name="description" class="form-control" placeholder="Введите описание"/>
+                <input type="text" name="description" class="form-control is-invalid" placeholder="Введите описание" required/>
+            </div>
+            <div class="invalid-feedback">
+                Пожалуйста, введите описание.
             </div>
         </div>
 

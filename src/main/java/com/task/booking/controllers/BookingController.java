@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,8 +29,34 @@ public class BookingController {
     private BookingRepository bookingRepository;
 
     @GetMapping("booking-all")
-    public String allBooking(Model model){
-        Iterable <Booking> bookings = bookingRepository.findAll();
+    public String allBooking(@RequestParam(required = false, defaultValue = "") String fastFilter, Model model){
+        Date today = new Date();
+        LocalDate dateFilter = LocalDate.now().minusDays(7);
+        Iterable <Booking> bookings = bookingRepository.findByDateBetween(
+                Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),today);
+        if (fastFilter != null && !fastFilter.isEmpty()){
+            switch (fastFilter){
+                case "week":
+                    dateFilter = LocalDate.now().minusDays(7);
+                    bookings = bookingRepository.findByDateBetween(
+                            Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),today);
+                    break;
+                case "two_week":
+                    dateFilter = LocalDate.now().minusDays(14);
+                    bookings = bookingRepository.findByDateBetween(
+                            Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),today);
+                    break;
+                case "month":
+                    dateFilter = LocalDate.now().minusDays(30);
+                    bookings = bookingRepository.findByDateBetween(
+                            Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),today);
+                    break;
+                case "all":
+                    bookings = bookingRepository.findAll();
+                    break;
+            }
+
+        }
         model.addAttribute("bookings", bookings);
         return "booking-all";
     }
