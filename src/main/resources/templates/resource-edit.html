@@ -3,14 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Редактирование ресурса</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <navbar th:insert="/blocks/navbar :: navbar"></navbar>
 </head>
 <body>
-<div class="container mt-5 mb-5">
-    <h1>Редактирование ресурса</h1>
+<h1>Редактирование ресурса</h1>
+<div class="container ml-2 col-5">
     <div   th:each="el : ${resource}">
-        <form method="post">
-            <input type="text" th:value="${el.nameResource}" name="nameResource" placeholder="Введите название ресурса" class="form-control"><br>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <form class="was-validated" method="post">
+            <div class="mb-2">
+                <input type="text" th:value="${el.nameResource}" name="nameResource" placeholder="Введите название ресурса" class="form-control" required><br>
+
+                <div class="invalid-feedback">
+                    Пожалуйста, укажите наименование ресурса.
+                </div>
+
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            </div>
             <button type="submit" class="btn btn-success">Обновить ресурс</button>
         </form>
     </div> <br>
