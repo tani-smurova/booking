@@ -26,7 +26,10 @@
 
         <button type="submit" class="btn btn-light">Применить быстрый  фильтр</button>
     </form>
-
+    <b th:text="'Применен фильтр - ' + ${filter}"/>
+    <hr>
+    <b th:text="${message}"/>
+    <hr>
     <div th:each="el : ${bookings}">
         <form th:action ="'/booking-remove-'+${el.id}" method = "post">
             <p th:text="'Ресурс бронирования: ' + ${el.getNameRosource()}"/>

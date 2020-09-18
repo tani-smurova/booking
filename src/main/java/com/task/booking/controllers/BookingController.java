@@ -34,29 +34,35 @@ public class BookingController {
         LocalDate dateFilter = LocalDate.now().minusDays(7);
         Iterable <Booking> bookings = bookingRepository.findByDateBetween(
                 Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),today);
-        if (fastFilter != null && !fastFilter.isEmpty()){
-            switch (fastFilter){
-                case "week":
-                    dateFilter = LocalDate.now().minusDays(7);
-                    bookings = bookingRepository.findByDateBetween(
-                            Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),today);
-                    break;
-                case "two_week":
-                    dateFilter = LocalDate.now().minusDays(14);
-                    bookings = bookingRepository.findByDateBetween(
-                            Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),today);
-                    break;
-                case "month":
-                    dateFilter = LocalDate.now().minusDays(30);
-                    bookings = bookingRepository.findByDateBetween(
-                            Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()),today);
-                    break;
-                case "all":
-                    bookings = bookingRepository.findAll();
-                    break;
-            }
 
+        //Если быстрый фильтр не задан, выводим по умолчанию бронирования на неделю
+        if (fastFilter == null || fastFilter.isEmpty()) fastFilter = "week";
+
+        switch (fastFilter){
+            case "week":
+                dateFilter = LocalDate.now().plusDays(7);
+                bookings = bookingRepository.findByDateBetween(
+                        today, Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+                model.addAttribute("filter", "Показаны бронирования на неделю");
+                break;
+            case "two_week":
+                dateFilter = LocalDate.now().plusDays(14);
+                bookings = bookingRepository.findByDateBetween(
+                        today, Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+                model.addAttribute("filter", "Показаны бронирования на две недели");
+                break;
+            case "month":
+                dateFilter = LocalDate.now().plusDays(30);
+                bookings = bookingRepository.findByDateBetween(
+                        today, Date.from(dateFilter.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+                model.addAttribute("filter", "Показаны бронирования на месяц");
+                break;
+            case "all":
+                bookings = bookingRepository.findAll();
+                model.addAttribute("filter", "Показаны все бронирования");
+                break;
         }
+
         model.addAttribute("bookings", bookings);
         return "booking-all";
     }
@@ -75,22 +81,48 @@ public class BookingController {
                                   @RequestParam String timeStart,
                                   @RequestParam String timeEnd,
                                   @AuthenticationPrincipal User user,
-                                  @RequestParam String description)
+                                  @RequestParam String description,
+                                    Model model)
             throws Exception{
         Booking book = new Booking();
         Resource res = resourceRepository.findById(idResource).orElseThrow();
         book.setResource(res);
         Date d = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        book.setDate(d);
-        d = new SimpleDateFormat("HH:mm").parse(timeStart);
-        book.setTimeStart(d);
-        d = new SimpleDateFormat("HH:mm").parse(timeEnd);
-        book.setTimeEnd(d);
-        book.setCountPerson(count);
-        book.setUser(user);
-        book.setDescription(description);
-        bookingRepository.save(book);
-        return "redirect:/booking-all";
+        Date tS = new SimpleDateFormat("HH:mm").parse(timeStart);
+        Date tE = new SimpleDateFormat("HH:mm").parse(timeEnd);
+
+        //Проверка доступности выбранного ресурса в указанный промежуток времени
+        boolean available = true;
+        Iterable<Booking> bookings = bookingRepository.findByResource(res);
+        for (Booking bookFromDb: bookings){
+            Date dFromDb = new Date(bookFromDb.getDate().getTime());
+            Date tSFromDb = new Date(bookFromDb.getTimeStart().getTime());
+            Date tEFromDb = new Date(bookFromDb.getTimeEnd().getTime());
+
+            if (dFromDb.equals(d)){
+                if ((tS.before(tSFromDb) & (tE.after(tSFromDb))) |
+                        (tS.after(tSFromDb) & (tS.before(tEFromDb))) |
+                        (tS.equals(tSFromDb))){
+                            available=false;
+                            model.addAttribute("message",
+                                    "Ошибка при добавлении бронирования: ресурс занят");
+                            break;
+                        }
+            }
+        }
+        if (available){
+            book.setDate(d);
+            book.setTimeStart(tS);
+            book.setTimeEnd(tE);
+            book.setCountPerson(count);
+            book.setUser(user);
+            book.setDescription(description);
+            bookingRepository.save(book);
+            model.addAttribute("message",
+                    "Бронирование успешно добавлено");
+        }
+
+        return "booking-all";
     }
 
     @PostMapping ("booking-remove-{id}")
